@@ -36,11 +36,7 @@ namespace Array
 
         public bool Contains(int element)
         {
-            bool containsValidation = false;
-            for (int i = 0; i < array.Length; i++)
-                if (array[i] == element)
-                    containsValidation = true;
-            return containsValidation;
+            return System.Array.IndexOf(array, element) != -1;
         }
 
         public int IndexOf(int element)
@@ -50,12 +46,9 @@ namespace Array
 
         public void Insert(int index, int element)
         {
-            int[] auxiliarArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-                auxiliarArray[i] = array[i];
             System.Array.Resize(ref array, array.Length + 1);
-            for (int i = index; i < array.Length - 1; i++)
-                array[i + 1] = auxiliarArray[i];
+            for (int i = array.Length-1 ; i >= index; i--)
+                array[i] = array[i-1];
             array[index] = element;
         }
 
@@ -86,11 +79,8 @@ namespace Array
 
         public void RemoveAt(int index)
         {
-            int[] auxiliarArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-                auxiliarArray[i] = array[i];
             for (int i = index; i < array.Length - 1; i++)
-                array[i + 1] = auxiliarArray[i];
+                array[i] = array[i+1];
             System.Array.Resize(ref array, array.Length - 1);
         }
     }

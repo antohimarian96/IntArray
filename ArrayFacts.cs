@@ -27,7 +27,7 @@ namespace ArrayFacts
             array.Add(5);
             array.Remove(4);
             array.RemoveAt(6);
-            Assert.Equal(6, array.Count());
+            Assert.Equal(5, array.Count());
         }
     }
 }
