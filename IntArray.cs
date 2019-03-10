@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Array
+﻿namespace Array
 {
     public class IntArray
     {
@@ -58,30 +54,29 @@ namespace Array
                 array[i] = 0;
         }
 
-        public void Remove(int element)
-        {
-            int[] auxiliarArray = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-                auxiliarArray[i] = array[i];
-            bool found = false;
-            int index = 0;
-            for (int i = 0; i < array.Length && !found; i++)
-                if (array[i] == element)
-                {
-                    index = i;
-                    found = true;
-                    array[i] = 0;
-                }
-            for (int i = index; i < array.Length-1; i++)
-                array[i] = auxiliarArray[i + 1];
-            System.Array.Resize(ref array, array.Length - 1);
-        }
-
         public void RemoveAt(int index)
         {
             for (int i = index; i < array.Length - 1; i++)
-                array[i] = array[i+1];
+                array[i] = array[i + 1];
             System.Array.Resize(ref array, array.Length - 1);
         }
+
+        public void Remove(int element)
+        {
+            var result = new IntArray();
+            int index = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == element && index==0)
+                {
+                    index = i;
+                }
+                result.Add(array[i]);
+            }
+            result.RemoveAt(index);
+            array = result.array;
+            
+        }
+
     }
 }
