@@ -14,8 +14,7 @@
         public void Add(int element)
         {
             array[index] = element;
-            if(index == array.Length-1)
-            System.Array.Resize(ref array, array.Length * 2);
+            EnsureCapacity();
             index++;
         }
 
@@ -39,8 +38,9 @@
 
         public bool Contains(int element)
         {
-            if (System.Array.IndexOf(array, element) <= index)
-                return System.Array.IndexOf(array, element) != -1;
+            for (int i = 0; i < index; i++)
+                if (array[i] == element)
+                    return true;
             return false;
         }
 
@@ -51,8 +51,7 @@
 
         public void Insert(int index, int element)
         {
-            if(index==array.Length)
-            System.Array.Resize(ref array, array.Length *2);
+            EnsureCapacity();
             for (int i = array.Length-1 ; i >= index; i--)
                 array[i] = array[i-1];
             array[index] = element;
@@ -76,8 +75,13 @@
 
         public void Remove(int element)
         {
-            if (IndexOf(element)!=-1) 
             RemoveAt(IndexOf(element));
+        }
+
+        public void EnsureCapacity()
+        {
+            if (index == array.Length-1)
+                System.Array.Resize(ref array, array.Length * 2);
         }
 
     }
