@@ -21,22 +21,27 @@
 
         public int Count()
         {
-            return array.Length;
+            return index;
         }
 
         public int Element(int index)
         {
-            return array[index];
+            if (index <= this.index) 
+                return array[index];
+            return 0;
         }
 
         public void SetElement(int index, int element)
         {
-            array[index] = element;
+            if (index <= this.index)
+                array[index] = element;
         }
 
         public bool Contains(int element)
         {
-            return System.Array.IndexOf(array, element) != -1;
+            if (System.Array.IndexOf(array, element) <= index)
+                return System.Array.IndexOf(array, element) != -1;
+            return false;
         }
 
         public int IndexOf(int element)
@@ -47,11 +52,10 @@
         public void Insert(int index, int element)
         {
             if(index==array.Length)
-            System.Array.Resize(ref array, array.Length + 1);
+            System.Array.Resize(ref array, array.Length *2);
             for (int i = array.Length-1 ; i >= index; i--)
                 array[i] = array[i-1];
             array[index] = element;
-            if(index==this.index)
             this.index++;
         }
 
@@ -62,9 +66,12 @@
 
         public void RemoveAt(int index)
         {
-            for (int i = index; i < array.Length - 1; i++)
-                array[i] = array[i + 1];
-            System.Array.Resize(ref array, array.Length - 1);
+            if (index <= this.index)
+            {
+                for (int i = index; i < array.Length - 1; i++)
+                    array[i] = array[i + 1];
+                this.index--;
+            }
         }
 
         public void Remove(int element)
