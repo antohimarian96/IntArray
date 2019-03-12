@@ -13,8 +13,8 @@
 
         public void Add(int element)
         {
-            array[index] = element;
             EnsureCapacity();
+            array[index] = element;
             index++;
         }
 
@@ -38,15 +38,15 @@
 
         public bool Contains(int element)
         {
-            for (int i = 0; i < index; i++)
-                if (array[i] == element)
-                    return true;
-            return false;
+            return IndexOf(element) != -1;
         }
 
         public int IndexOf(int element)
         {
-            return System.Array.IndexOf(array, element);
+            for (int i = 0; i < index; i++)
+                if (array[i] == element)
+                    return i;
+            return -1;
         }
 
         public void Insert(int index, int element)
@@ -80,7 +80,7 @@
 
         public void EnsureCapacity()
         {
-            if (index == array.Length-1)
+            if (index == array.Length)
                 System.Array.Resize(ref array, array.Length * 2);
         }
 
