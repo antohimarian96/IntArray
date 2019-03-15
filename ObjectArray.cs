@@ -1,47 +1,52 @@
-﻿namespace Array
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Array
 {
-    public class IntArray
+    public class ObjectArray
     {
-        protected int[] array;
+        protected object[] array;
         public int Count { get; protected set; }
 
-        public IntArray()
+        public ObjectArray()
         {
-            array = new int[4];
+            array = new object[4];
             Count = 0;
         }
 
-        public virtual void Add(int element)
+        public void Add(object element)
         {
             EnsureCapacity();
             array[Count] = element;
             Count++;
         }
 
-        public virtual int this[int index]
+        public object this[int index]
         {
             get => array[index];
             set => array[index] = value;
+            
         }
 
-        public bool Contains(int element)
+        public bool Contains(object element)
         {
             return IndexOf(element) != -1;
         }
 
-        public int IndexOf(int element)
+        public int IndexOf(object element)
         {
             for (int i = 0; i < Count; i++)
-                if (array[i] == element)
+                if (Equals(array[i],element))
                     return i;
             return -1;
         }
 
-        public virtual void Insert(int index, int element)
+        public void Insert(int index, object element)
         {
             EnsureCapacity();
-            for (int i = Count; i >= index+1; i--)
-                array[i] = array[i-1];
+            for (int i = Count; i >= index + 1; i--)
+                array[i] = array[i - 1];
             array[index] = element;
             Count++;
         }
@@ -61,7 +66,7 @@
             }
         }
 
-        public void Remove(int element)
+        public void Remove(object element)
         {
             RemoveAt(IndexOf(element));
         }
