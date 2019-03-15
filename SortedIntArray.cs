@@ -1,46 +1,55 @@
-using System;
-using Xunit;
-using Array;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace SortedIntArrayFacts
+namespace Array
 {
-    public class SortedIntArrayFacts
+    public class SortedIntArray : IntArray
     {
-        [Fact]
-        public void AddFacts()
+        public override void Add(int element)
         {
-            var result = new SortedIntArray();
-            result.Add(3);
-            result.Add(1);
-            result.Add(2);
-            result.Add(1);
-            result.Add(10);
-            result.Add(0);
-            result.Add(11);
-            Assert.Equal(3,result[4]);
+            if(Count==0)
+            base.Add(element);
+            else
+            base.Insert(FindElementPosition(element),element);
         }
 
-        [Fact]
-        public void Insert()
+        public override void Insert(int index, int element)
         {
-            var result = new SortedIntArray();
-            result.Add(3);
-            result.Add(1);
-            result.Insert(1, 2);
-            result.Insert(0, 2);
-            result.Insert(0, 0);
-            Assert.Equal(2, result[2]);
+            if (index == 0)
+            {
+                if (element < array[index])
+                    base.Insert(index, element);
+            }
+            else
+            {
+                if (element > array[index - 1] && element < array[index])
+                    base.Insert(index, element);
+            }
         }
 
-        [Fact]
-        public void SetElement()
+        public override int this[int index]
         {
-            var result = new SortedIntArray();
-            result.Add(3);
-            result.Add(1);
-            result[1] = 2;
-            result[0] = 4;
-            Assert.Equal(3, result[2]);
+            get => base[index];
+            set 
+            {
+                Insert(index,value);
+            }
+        }
+
+        private int FindElementPosition(int element)
+        {
+            bool found = false;
+            int index = 0;
+            for (int i = 0; i < Count && !found; i++)
+                if (array[i] > element)
+                {
+                    index = i;
+                    found = true;
+                }
+            if (!found)
+                index = Count;
+            return index;
         }
     }
 }
