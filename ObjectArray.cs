@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Array
 {
-    public class ObjectArray
+    public class ObjectArray : IEnumerable
     {
         protected object[] array;
         public int Count { get; protected set; }
@@ -75,6 +76,11 @@ namespace Array
         {
             if (Count == array.Length)
                 System.Array.Resize(ref array, array.Length * 2);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return new Enumerate(this);
         }
 
     }
