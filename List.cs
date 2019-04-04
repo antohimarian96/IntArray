@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Array
 {
-    public class List<type> : IEnumerable
+    public class List<T> : IList<T>
     {
-        protected type[] array;
+        protected T[] array;
         public int Count { get; protected set; }
+
+        public bool IsReadOnly => true;
 
         public List()
         {
-            array = new type[4];
+            array = new T[4];
             Count = 0;
         }
 
-        public void Add(type element)
+        public virtual void Add(T element)
         {
             EnsureCapacity();
             array[Count] = element;
             Count++;
         }
 
-        public type this[int index]
+        public virtual T this[int index]
         {
             get => array[index];
             set => array[index] = value;
 
         }
 
-        public bool Contains(type element)
+        public bool Contains(T element)
         {
             return IndexOf(element) != -1;
         }
 
-        public int IndexOf(type element)
+        public int IndexOf(T element)
         {
             for (int i = 0; i < Count; i++)
                 if (Equals(array[i], element))
@@ -43,8 +43,10 @@ namespace Array
             return -1;
         }
 
-        public void Insert(int index, type element)
+        public virtual void Insert(int index, T element)
         {
+            if (index > Count || index < 0)
+                throw new System.ArgumentOutOfRangeException();
             EnsureCapacity();
             for (int i = Count; i >= index + 1; i--)
                 array[i] = array[i - 1];
@@ -59,17 +61,20 @@ namespace Array
 
         public void RemoveAt(int index)
         {
-            if (index <= Count)
+            if (index <= Count && index >= 0)
             {
                 for (int i = index; i < array.Length - 1; i++)
                     array[i] = array[i + 1];
                 Count--;
             }
+            else
+                throw new System.ArgumentOutOfRangeException();
         }
 
-        public void Remove(type element)
+        public bool Remove(T element)
         {
             RemoveAt(IndexOf(element));
+            return true;
         }
 
         private void EnsureCapacity()
@@ -78,10 +83,32 @@ namespace Array
                 System.Array.Resize(ref array, array.Length * 2);
         }
 
-        public IEnumerator GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
                 yield return array[i];
         }
+
+        public IEnumerator GetEnumerator()
+        {
+            var result = this;
+            IEnumerable<T> enumerator = result;
+            return enumerator.GetEnumerator();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (array.Length == 0)
+                throw new System.ArgumentNullException();
+            if (arrayIndex < 0)
+                throw new System.ArgumentOutOfRangeException();
+            for (int i = arrayIndex ; i < Count + arrayIndex ; i++) 
+            {
+                array[i] = this.array[i - arrayIndex];
+            }
+        }
+
     }
+
+    
 }

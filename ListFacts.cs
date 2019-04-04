@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 using Array;
 
@@ -92,5 +91,35 @@ namespace ObjectArrayFacts
             Assert.Equal("multe", array[0]);
             Assert.Equal("mere", array[1]);
         }
+
+        [Fact]
+        public void EnumeratorFact()
+        {
+            var array = new List<string> { "Ana", "are", "multe", "mere" };
+            var enumerator = array.GetEnumerator();
+            enumerator.MoveNext();
+            enumerator.MoveNext();
+            Assert.Equal("are",enumerator.Current);
+        }
+
+        [Fact]
+        public void CopyToFact()
+        {
+            var firstArrayInt = new List<int> { 1, 2, 3, 4 };
+            int[] secondArrayInt = { 4, 5, 6, 7, 8, 9, 10 };
+            firstArrayInt.CopyTo(secondArrayInt, 2);
+            Assert.Equal(new int[] { 4, 5, 1, 2, 3, 4,10 }, secondArrayInt);
+        }
+
+        [Fact]
+        public void CopyToFact2()
+        {
+            var firstArrayString = new List<string> { "zero", "one", null };
+            string[] secondArrayString = { "", "", "two", "three", "four", "five"};
+            firstArrayString.CopyTo(secondArrayString, 2);
+            Assert.Equal(new string[] { "", "", "zero", "one", null, "five" }, secondArrayString);
+            
+        }
+        
     }
 }
