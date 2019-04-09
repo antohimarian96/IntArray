@@ -8,7 +8,7 @@ namespace Array
         protected T[] array;
         public int Count { get; protected set; }
 
-        public bool IsReadOnly => true;
+        public bool IsReadOnly => false;
 
         public List()
         {
@@ -30,7 +30,8 @@ namespace Array
             set
             {
                 CheckReadOnly();
-                IndexValidation(index);
+                if (index < 0 || index > array.Length)
+                    throw new System.ArgumentOutOfRangeException();
                 array[index] = value;
             }
         }
@@ -120,7 +121,7 @@ namespace Array
 
         private void CheckReadOnly()
         {
-            if (IsReadOnly)
+            if (array.IsReadOnly)
                 throw new System.NotSupportedException();
         }
     }
