@@ -18,6 +18,7 @@ namespace Array
 
         public virtual void Add(T element)
         {
+            CheckReadOnly();
             EnsureCapacity();
             array[Count] = element;
             Count++;
@@ -26,8 +27,12 @@ namespace Array
         public virtual T this[int index]
         {
             get => array[index];
-            set => array[index] = value;
-
+            set
+            {
+                CheckReadOnly();
+                IndexValidation(index);
+                array[index] = value;
+            }
         }
 
         public bool Contains(T element)
@@ -45,8 +50,8 @@ namespace Array
 
         public virtual void Insert(int index, T element)
         {
-            if (index > Count || index < 0)
-                throw new System.ArgumentOutOfRangeException();
+            CheckReadOnly();
+            IndexValidation(index);
             EnsureCapacity();
             for (int i = Count; i >= index + 1; i--)
                 array[i] = array[i - 1];
@@ -56,23 +61,23 @@ namespace Array
 
         public void Clear()
         {
+            CheckReadOnly();
             Count = 0;
         }
 
         public void RemoveAt(int index)
         {
-            if (index <= Count && index >= 0)
-            {
-                for (int i = index; i < array.Length - 1; i++)
-                    array[i] = array[i + 1];
-                Count--;
-            }
-            else
-                throw new System.ArgumentOutOfRangeException();
+            CheckReadOnly();
+            IndexValidation(index);
+            for (int i = index; i < array.Length - 1; i++)
+                array[i] = array[i + 1];
+            Count--;
+            
         }
 
         public bool Remove(T element)
         {
+            CheckReadOnly();
             RemoveAt(IndexOf(element));
             return true;
         }
@@ -100,15 +105,23 @@ namespace Array
         {
             if (array.Length == 0)
                 throw new System.ArgumentNullException();
-            if (arrayIndex < 0)
-                throw new System.ArgumentOutOfRangeException();
+            IndexValidation(arrayIndex);
             for (int i = arrayIndex ; i < Count + arrayIndex ; i++) 
             {
                 array[i] = this.array[i - arrayIndex];
             }
         }
 
-    }
+        private void IndexValidation(int index)
+        {
+            if (index > Count || index < 0)
+                throw new System.ArgumentOutOfRangeException();
+        }
 
-    
+        private void CheckReadOnly()
+        {
+            if (IsReadOnly)
+                throw new System.NotSupportedException();
+        }
+    }
 }
