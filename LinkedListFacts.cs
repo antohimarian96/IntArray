@@ -38,8 +38,8 @@ namespace LinkedListFacts
             list.AddLast(new Node<int>(2));
             list.AddLast(new Node<int>(4));
             list.AddLast(new Node<int>(5));
-            list.AddAfter(list.Find(2), 3);
-            list.AddAfter(list.Find(5), 6);
+            list.AddAfter(new Node<int>(3),list.Find(2));
+            list.AddAfter(new Node<int>(6),list.Find(5));
         }
 
         [Fact] 
@@ -50,10 +50,10 @@ namespace LinkedListFacts
             list.AddLast(new Node<int>(2));
             list.AddLast(new Node<int>(4));
             list.AddLast(new Node<int>(5));
-            list.AddAfter(list.Find(2), 3);
-            list.AddAfter(list.Find(5), 6);
-            Assert.Throws<ArgumentNullException>(() => list.AddAfter(null, 3));
-            Assert.Throws<InvalidOperationException>(() => list.AddAfter(list.Find(7), 3));
+            list.AddAfter(new Node<int>(3), list.Find(2));
+            list.AddAfter(new Node<int>(6), list.Find(5));
+            Assert.Throws<ArgumentNullException>(() => list.AddAfter(null, new Node<int>(3)));
+            Assert.Throws<InvalidOperationException>(() => list.AddAfter(list.Find(7), new Node<int>(3)));
         }
 
         [Fact]
@@ -63,8 +63,8 @@ namespace LinkedListFacts
             list.AddLast(new Node<int>(2));
             list.AddLast(new Node<int>(3));
             list.AddLast(new Node<int>(5));
-            list.AddBefore(list.Find(2), 1);
-            list.AddBefore(list.Find(5), 4);
+            list.AddBefore(new Node<int>(1), list.Find(2));
+            list.AddBefore(new Node<int>(4), list.Find(5));
         }
 
         [Fact]
@@ -74,10 +74,10 @@ namespace LinkedListFacts
             list.AddLast(new Node<int>(2));
             list.AddLast(new Node<int>(3));
             list.AddLast(new Node<int>(5));
-            list.AddBefore(list.Find(2), 1);
-            list.AddBefore(list.Find(5), 4);
-            Assert.Throws<ArgumentNullException>(() => list.AddBefore(null, 3));
-            Assert.Throws<InvalidOperationException>(() => list.AddBefore(list.Find(7), 3));
+            list.AddBefore(new Node<int>(1), list.Find(2));
+            list.AddBefore(new Node<int>(4), list.Find(5));
+            Assert.Throws<ArgumentNullException>(() => list.AddBefore(null, new Node<int>(4)));
+            Assert.Throws<InvalidOperationException>(() => list.AddBefore(list.Find(7), new Node<int>(4)));
         }
     }
 }

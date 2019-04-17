@@ -21,81 +21,34 @@ namespace Array
         }
 
         public void AddFirst(Node<T> newNode)
-        {           
-            Count++;
-            CheckIfNodeIsNull(newNode);
-            CheckIfNodeBelongsToOtherList(newNode);
-            newNode.Previous = head;
-            if (head.Previous == head)
-            {
-                head.Previous = newNode;
-                newNode.Next = head;
-            }
-            else
-            {
-                newNode.Next = head.Next;
-            }
-            head.Next = newNode;
-        }
-
-        private void CheckIfNodeBelongsToOtherList(Node<T> node)
         {
-            if (node.Next != null || node.Previous != null)
-                throw new InvalidOperationException();
+            AddNode(newNode, head.Next);
         }
 
         public void AddLast(Node<T> newNode)
         {
-            Count++;
-            CheckIfNodeBelongsToOtherList(newNode);
-            CheckIfNodeIsNull(newNode);
-            newNode.Next = head;
-            if(head.Next == head)
-            {
-                head.Next = newNode;
-                newNode.Previous = head;
-            }
-            else
-            {
-                newNode.Previous = head.Previous;
-                head.Previous.Next = newNode;
-            }
-            head.Previous = newNode;
-
+            AddNode(newNode, head);
         }
 
-        public void AddBefore(Node<T> node, T element)
+        public void AddBefore(Node<T> newNode, Node<T> node)
+        {
+            AddNode(newNode, node);
+        }
+
+        public void AddAfter(Node<T> newNode, Node<T> node)
+        {
+            AddNode(newNode, node.Next);
+        }
+
+        private void AddNode(Node<T> newNode, Node<T> node)
         {
             Count++;
-            CheckIfNodeIsNull(node);
-            Find(node.Value);
-            var current = Find(node.Value);
-            Node<T> newNode = new Node<T>(element, node, null);
+            CheckIfNodeIsNull(newNode);
+            CheckIfNodeBelongsToOtherList(newNode);
+            newNode.Next = node;
             newNode.Previous = node.Previous;
             node.Previous.Next = newNode;
             node.Previous = newNode;
-            
-        }
-
-        public void AddAfter(Node<T> node, T element)
-        {
-            Count++;
-            CheckIfNodeIsNull(node);
-            Find(node.Value);
-            var current = Find(node.Value);
-            Node<T> newNode = new Node<T>(element, null, node);
-            if (node.Next != head)
-            {
-                newNode.Next = node.Next;
-                node.Next.Previous = newNode;
-                node.Next = newNode;
-            }
-            else
-            {
-                newNode.Next = head;
-                head.Previous = newNode;
-                node.Next = newNode;
-            }
         }
 
         public Node<T> Find(T element)
@@ -110,6 +63,12 @@ namespace Array
             if (Equals(current.Value, element))
                 return current;
             else
+                throw new InvalidOperationException();
+        }
+
+        private void CheckIfNodeBelongsToOtherList(Node<T> node)
+        {
+            if (node.Next != null || node.Previous != null)
                 throw new InvalidOperationException();
         }
 
