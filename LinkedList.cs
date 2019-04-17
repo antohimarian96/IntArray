@@ -9,7 +9,6 @@ namespace Array
     {
         private Node<T> head;
         public int Count { get; protected set; }
-
         public bool IsReadOnly { get; }
 
         public LinkedList()
@@ -32,49 +31,74 @@ namespace Array
 
         public void AddBefore(Node<T> newNode, Node<T> node)
         {
+            CheckIfNodeBelongsToAnotherList(node);
             AddNode(newNode, node);
+        }
+
+        public void AddBefore(Node<T> newNode, T element)
+        {
+            AddBefore(newNode, Find(element));
         }
 
         public void AddAfter(Node<T> newNode, Node<T> node)
         {
+            CheckIfNodeBelongsToAnotherList(node);
             AddNode(newNode, node.Next);
+        }
+
+        public void AddAfter(Node<T> newNode, T element)
+        {
+            AddNode(newNode, Find(element).Next);
         }
 
         private void AddNode(Node<T> newNode, Node<T> node)
         {
             Count++;
             CheckIfNodeIsNull(newNode);
-            CheckIfNodeBelongsToOtherList(newNode);
+            CheckIfNodeBelongsToAnotherList(newNode);
+            CheckNodeLinks(newNode);
             newNode.Next = node;
             newNode.Previous = node.Previous;
             node.Previous.Next = newNode;
             node.Previous = newNode;
+            newNode.List = this;
         }
 
         public Node<T> Find(T element)
         {
-            var current = head;
-            int checkCount = 0;
-            while (!Equals(current.Value,element) && checkCount <= Count)
+            var current = head.Next;
+            while (current != head) 
             {
+                if (Equals(current.Value, element))
+                    return current;
                 current = current.Next;
-                checkCount++;
             }
-            if (Equals(current.Value, element))
-                return current;
-            else
-                throw new InvalidOperationException();
+            throw new InvalidOperationException();
         }
 
-        private void CheckIfNodeBelongsToOtherList(Node<T> node)
+        private void CheckNodeLinks(Node<T> node)
         {
             if (node.Next != null || node.Previous != null)
                 throw new InvalidOperationException();
         }
 
+        private void CheckIfNodeBelongsToAnotherList(Node<T> node)
+        {
+            if(node.List != this && node.List != null)
+                throw new InvalidOperationException();
+        }
+
+        private void CheckIfNodeIsNull(Node<T> node)
+        {
+            if (node == null)
+                throw new ArgumentNullException();
+        }
+
         public void Clear()
         {
-            throw new NotImplementedException();
+            Count = 0;
+            head.Previous = head;
+            head.Next = head;
         }
 
         public bool Contains(T item)
@@ -105,12 +129,6 @@ namespace Array
         public void Add(T item)
         {
             throw new NotImplementedException();
-        }
-
-        private void CheckIfNodeIsNull(Node<T> node)
-        {
-            if (node == null)
-                throw new ArgumentNullException();
         }
     }
 }

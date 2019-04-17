@@ -79,5 +79,23 @@ namespace LinkedListFacts
             Assert.Throws<ArgumentNullException>(() => list.AddBefore(null, new Node<int>(4)));
             Assert.Throws<InvalidOperationException>(() => list.AddBefore(list.Find(7), new Node<int>(4)));
         }
+
+        [Fact]
+        public void CheckIfNodeBelongsToAnotherList()
+        {
+
+        }
+
+        [Fact]
+        public void ClearFact()
+        {
+            var list = new LinkedList<int>();
+            list.AddFirst(new Node<int>(1));
+            list.AddFirst(new Node<int>(2));
+            list.AddFirst(new Node<int>(3));
+            list.AddFirst(new Node<int>(4));
+            list.Clear();
+            Assert.Equal(0,list.Count);
+        }
     }
 }
