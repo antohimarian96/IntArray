@@ -71,12 +71,10 @@ namespace Array
 
         private Node<T> TryToFind(T element)
         {
-            var current = head.Next;
-            while (current != head)
+            for (var current = head.Next; current != head; current = current.Next)
             {
                 if (Equals(current.Value, element))
                     return current;
-                current = current.Next;
             }
             return null;
         }
@@ -169,11 +167,9 @@ namespace Array
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            var current = head.Next;
-            for (; current != head;)
+            for (var current = head.Next; current != head; current = current.Next)
             {
                 yield return current.Value;
-                current = current.Next;
             }
         }
 
