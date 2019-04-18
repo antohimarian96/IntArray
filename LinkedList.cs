@@ -66,14 +66,23 @@ namespace Array
 
         public Node<T> Find(T element)
         {
+            var newNode = TryToFind(element);
+            if (newNode != null)
+                return newNode;
+            else
+                throw new InvalidOperationException();
+        }
+
+        private Node<T> TryToFind(T element)
+        {
             var current = head.Next;
-            while (current != head) 
+            while (current != head)
             {
                 if (Equals(current.Value, element))
                     return current;
                 current = current.Next;
             }
-            throw new InvalidOperationException();
+            return null;
         }
 
         private void CheckNodeLinks(Node<T> node)
@@ -103,17 +112,63 @@ namespace Array
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return TryToFind(item) != null;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int index)
         {
-            throw new NotImplementedException();
+            var current = head;
+            if (array.Length == 0)
+                throw new ArgumentNullException();
+            if (index < 0)
+                throw new ArgumentOutOfRangeException();
+            if (index > Count)
+                throw new ArgumentException();
+            for (int i = index; i < Count + index; i++)
+            {
+                current = current.Next;
+                array[i] = current.Value;
+            }
         }
 
-        public bool Remove(T item)
+        public Node<T> FindLast(T element)
         {
-            throw new NotImplementedException();
+            var current = head.Next;
+            Node<T> node = null;
+            while (current != head)
+            {
+                if (Equals(current.Value, element))
+                    node = current;
+                current = current.Next;
+            }
+            return node;
+        }
+
+        public void Remove(Node<T> node)
+        {
+            CheckIfNodeIsNull(node);
+            CheckIfNodeBelongsToAnotherList(node);
+            node.Previous.Next = node.Next;
+            node.Next.Previous = node.Previous;
+            node.Next = null;
+            node.Previous = null;
+            node.List = null;
+            Count--;
+        }
+
+        public void Remove(T item)
+        {
+            Remove(Find(item));
+        }
+
+        public void RemoveFirst()
+        {
+            Remove(head.Next);
+        }
+
+        public void RemoveLast()
+        {
+            Remove(head.Previous);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -127,6 +182,11 @@ namespace Array
         }
 
         public void Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICollection<T>.Remove(T item)
         {
             throw new NotImplementedException();
         }
