@@ -38,11 +38,11 @@ namespace LinkedListFacts
             list.AddLast(new Node<int>(2));
             list.AddLast(new Node<int>(4));
             list.AddLast(new Node<int>(5));
-            list.AddAfter(new Node<int>(3),list.Find(2));
-            list.AddAfter(new Node<int>(6),list.Find(5));
+            list.AddAfter(new Node<int>(3), list.Find(2));
+            list.AddAfter(new Node<int>(6), list.Find(5));
         }
 
-        [Fact] 
+        [Fact]
         public void AddAfterExceptionFact()
         {
             var list = new LinkedList<int>();
@@ -89,7 +89,7 @@ namespace LinkedListFacts
             list.AddFirst(new Node<int>(3));
             list.AddFirst(new Node<int>(4));
             list.Clear();
-            Assert.Equal(0,list.Count);
+            Assert.Equal(0, list.Count);
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace LinkedListFacts
             int[] array = { 4, 5, 6, 7, 8, 9, 10 };
             list.CopyTo(array, 2);
             Assert.Equal(new int[] { 4, 5, 4, 3, 2, 1, 10 }, array);
-            Assert.Throws< ArgumentOutOfRangeException> (() => list.CopyTo(array,-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
             int[] nullArray = new int[0];
             Assert.Throws<ArgumentNullException>(() => list.CopyTo(nullArray, 1));
         }
@@ -168,6 +168,21 @@ namespace LinkedListFacts
             list.AddBefore(new Node<int>(1), list.Find(2));
             list.AddBefore(new Node<int>(4), list.Find(5));
             list.RemoveLast();
+        }
+
+        [Fact]
+        public void EnumeratorFact()
+        {
+            var list = new LinkedList<int>();
+            list.AddLast(new Node<int>(2));
+            list.AddLast(new Node<int>(3));
+            list.AddLast(new Node<int>(5));
+            list.AddBefore(new Node<int>(1), list.Find(2));
+            list.AddBefore(new Node<int>(4), list.Find(5));
+            var enumerator = list.GetEnumerator();
+            enumerator.MoveNext();
+            enumerator.MoveNext();
+            enumerator.MoveNext();
         }
     }
 }

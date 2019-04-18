@@ -66,11 +66,7 @@ namespace Array
 
         public Node<T> Find(T element)
         {
-            var newNode = TryToFind(element);
-            if (newNode != null)
-                return newNode;
-            else
-                throw new InvalidOperationException();
+            return TryToFind(element) ?? throw new InvalidOperationException();
         }
 
         private Node<T> TryToFind(T element)
@@ -171,14 +167,21 @@ namespace Array
             Remove(head.Previous);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            throw new NotImplementedException();
+            var current = head.Next;
+            for (; current != head;)
+            {
+                yield return current.Value;
+                current = current.Next;
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            var result = this;
+            IEnumerable<T> enumerator = result;
+            return enumerator.GetEnumerator();
         }
 
         public void Add(T item)
